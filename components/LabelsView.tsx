@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useGame, formatNumber } from '../context/GameContext';
 import { LABELS } from '../constants';
-import type { Contract, Label, CustomLabel, LabelSubmission } from '../types';
+import type { Contract, Label, CustomLabel, LabelSubmission, ArtistData } from '../types';
 import ArrowLeftIcon from './icons/ArrowLeftIcon';
 import ConfirmationModal from './ConfirmationModal';
 
@@ -74,7 +74,8 @@ const SignedView: React.FC<{ contract: Contract }> = ({ contract }) => {
     const { date } = gameState;
     const { labelSubmissions, contractHistory } = activeArtistData!;
 
-    const allCustomLabels = Object.values(gameState.artistsData).flatMap(data => data.customLabels);
+    // Fix: Cast Object.values result to ArtistData[] to avoid unknown property errors
+    const allCustomLabels = (Object.values(gameState.artistsData) as ArtistData[]).flatMap(data => data.customLabels);
 
     const label = contract.isCustom 
         ? allCustomLabels.find(l => l.id === contract.labelId)

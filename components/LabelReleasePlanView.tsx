@@ -1,5 +1,4 @@
 
-
 import React, { useState, useMemo } from 'react';
 import { useGame } from '../context/GameContext';
 import { GameDate, Song } from '../types';
@@ -48,15 +47,21 @@ const LabelReleasePlanView: React.FC = () => {
         const newSelection = new Map(selectedSingles);
         const currentDate = newSelection.get(songId);
         if (currentDate) {
-            // FIX: Replaced indexed property assignment with object spread to resolve a type error where GameDate lacks an index signature.
-            const newDate: GameDate = { ...currentDate, [part]: value };
+            // Fix: Replaced dynamic property assignment with explicit properties to resolve type error
+            const newDate: GameDate = { 
+                week: part === 'week' ? value : currentDate.week,
+                year: part === 'year' ? value : currentDate.year
+            };
             newSelection.set(songId, newDate);
         }
         setSelectedSingles(newSelection);
     };
     
     const handleProjectDateChange = (part: 'week' | 'year', value: number) => {
-        setProjectDate(prev => ({ ...prev, [part]: value }));
+        setProjectDate(prev => ({ 
+            week: part === 'week' ? value : prev.week,
+            year: part === 'year' ? value : prev.year
+        }));
     };
 
     const handleSubmit = () => {

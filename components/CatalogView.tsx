@@ -1,7 +1,7 @@
 
 import React, { useMemo, useState, ChangeEvent } from 'react';
 import { useGame, formatNumber } from '../context/GameContext';
-import type { Release, Song } from '../types';
+import type { Release, Song, ArtistData } from '../types';
 import ArrowLeftIcon from './icons/ArrowLeftIcon';
 import ChevronDownIcon from './icons/ChevronDownIcon';
 import InformationCircleIcon from './icons/InformationCircleIcon';
@@ -119,8 +119,9 @@ const CatalogView: React.FC = () => {
 
     const { grammyHistory } = activeArtistData;
 
-    const allSongs = Object.values(gameState.artistsData).flatMap(d => d.songs);
-    const allReleases = Object.values(gameState.artistsData).flatMap(d => d.releases);
+    // Fix: Added type cast to ArtistData[] to avoid unknown property errors
+    const allSongs = (Object.values(gameState.artistsData) as ArtistData[]).flatMap(d => d.songs);
+    const allReleases = (Object.values(gameState.artistsData) as ArtistData[]).flatMap(d => d.releases);
 
     const songsForArtist = useMemo(() => {
         return allSongs.filter(s => s.artistId === activeArtist.id || s.collaboration?.artistName === activeArtist.name);

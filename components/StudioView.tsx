@@ -1,5 +1,4 @@
 
-
 import React, { useState, useMemo } from 'react';
 import { useGame, formatNumber } from '../context/GameContext';
 import { GENRES, STUDIOS, NPC_ARTIST_NAMES } from '../constants';
@@ -7,7 +6,8 @@ import type { Song } from '../types';
 import ArrowLeftIcon from './icons/ArrowLeftIcon';
 
 const StudioView: React.FC = () => {
-    const { gameState, dispatch, activeArtist, activeArtistData, group } = useGame();
+    // Fix: Removed 'group' from direct context destructuring as it lives within 'gameState'.
+    const { gameState, dispatch, activeArtist, activeArtistData } = useGame();
     
     const [title, setTitle] = useState('');
     const [genre, setGenre] = useState(GENRES[0]);
@@ -20,7 +20,8 @@ const StudioView: React.FC = () => {
 
     if (!activeArtistData || !activeArtist) return null;
     const { money, releases } = activeArtistData;
-    const { careerMode } = gameState;
+    // Fix: Destructure group from gameState correctly.
+    const { careerMode, group } = gameState;
     const selectedStudio = STUDIOS[studioIndex];
 
     const hasReleasedAlbum = useMemo(() => {

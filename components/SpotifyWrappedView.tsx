@@ -32,11 +32,12 @@ const SpotifyWrappedView: React.FC = () => {
             
         const personaSongs: { song: Song, persona: string, description: string }[] = [];
         const availableSongs = [...releasedSongs].sort(() => 0.5 - Math.random());
+        // Fix: Renamed 'title' property to 'persona' to correctly match the S4ASongDetailView interface requirements.
         const personas = [
-            { title: "The Night Owl", description: "A track that fans leaned on after dark." },
-            { title: "The Early Riser", description: "A fan favorite for starting the day." },
-            { title: "The Party Starter", description: "The song that tends to kick off the weekend." },
-            { title: "The Shared Treasure", description: "The song that fans were more likely to share with others." },
+            { persona: "The Night Owl", description: "A track that fans leaned on after dark." },
+            { persona: "The Early Riser", description: "A fan favorite for starting the day." },
+            { persona: "The Party Starter", description: "The song that tends to kick off the weekend." },
+            { persona: "The Shared Treasure", description: "The song that fans were more likely to share with others." },
         ];
         
         for (let i = 0; i < Math.min(availableSongs.length, personas.length); i++) {

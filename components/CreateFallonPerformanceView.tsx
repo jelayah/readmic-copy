@@ -1,5 +1,4 @@
 
-
 import React, { useState, useMemo, useEffect } from 'react';
 import { useGame } from '../context/GameContext';
 import { Video, Song } from '../types';
@@ -76,6 +75,8 @@ const CreateFallonPerformanceView: React.FC = () => {
             thumbnail,
             releaseDate: date,
             artistId: activeArtist.id,
+            // Fix: Added missing required property channelId
+            channelId: activeArtist.id,
             description,
             mentionedNpcs: ['Jimmy Fallon'],
         };

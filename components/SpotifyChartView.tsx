@@ -3,7 +3,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useGame } from '../context/GameContext';
 import SpotifyIcon from './icons/SpotifyIcon';
 import ChevronDownIcon from './icons/ChevronDownIcon';
-import { ChartEntry, AlbumChartEntry } from '../types';
+import { ChartEntry, AlbumChartEntry, ChartHistory } from '../types';
 import ChevronLeftIcon from './icons/ChevronLeftIcon';
 
 const SpotifyChartView: React.FC = () => {
@@ -15,7 +15,8 @@ const SpotifyChartView: React.FC = () => {
         const facts = [];
 
         // Fact 1: Longest Charting Album
-        const longestAlbum = Object.entries(albumChartHistory).reduce((longest, [id, history]) => {
+        // Fix: Cast Object.entries to include proper typing for history object to avoid unknown property errors
+        const longestAlbum = (Object.entries(albumChartHistory) as [string, ChartHistory[string]][]).reduce((longest, [id, history]) => {
             if (!longest || history.weeksOnChart > longest.history.weeksOnChart) {
                 const album = billboardTopAlbums.find(a => a.uniqueId === id) || gameState.npcAlbums.find(a => a.uniqueId === id);
                 if (album) return { album, history };

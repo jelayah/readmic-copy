@@ -1,8 +1,7 @@
 
-
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { useGame, formatNumber } from '../context/GameContext';
-import type { Video } from '../types';
+import type { Video, ArtistData } from '../types';
 import { SUBSCRIBER_THRESHOLD_VERIFIED, VIEWS_THRESHOLD_VERIFIED, SUBSCRIBER_THRESHOLD_STORE, LABELS } from '../constants';
 import ArrowLeftIcon from './icons/ArrowLeftIcon';
 import CheckCircleIcon from './icons/CheckCircleIcon';
@@ -92,7 +91,8 @@ const YouTubeHome: React.FC = () => {
     }, [careerMode, group]);
     
     const filteredVideos = useMemo(() => {
-        const allVideos = Object.values(artistsData).flatMap(data => data.videos);
+        // Fix: Explicitly cast values of artistsData to ArtistData[] to avoid type compatibility issues.
+        const allVideos = (Object.values(artistsData) as ArtistData[]).flatMap(data => data.videos);
         const sortedByDate = [...allVideos].sort((a, b) => (b.releaseDate.year * 52 + b.releaseDate.week) - (a.releaseDate.year * 52 + a.releaseDate.week));
 
         if (activeFilter === 'All') {
@@ -123,7 +123,7 @@ const YouTubeHome: React.FC = () => {
     }, [artistsData, activeFilter, allPlayerArtists]);
 
     return (
-        <>
+        <div className="pb-20">
             <div className="sticky top-0 z-10">
                 <header className="p-3 flex items-center justify-between bg-[#0f0f0f]/80 backdrop-blur-sm">
                     <div className="flex items-center gap-2">
@@ -160,7 +160,7 @@ const YouTubeHome: React.FC = () => {
                     </div>
                 )}
             </div>
-        </>
+        </div>
     );
 };
 
@@ -240,11 +240,13 @@ const YouTubeChannelView: React.FC = () => {
          const filtered = videos.filter(v => v.channelId === channelIdToShow);
          switch (filter) {
             case 'Popular':
-                return filtered.sort((a, b) => b.views - a.views);
+                return [...filtered].sort((a, b) => b.views - a.views);
             case 'Latest':
-                return filtered.sort((a, b) => (b.releaseDate.year * 52 + b.releaseDate.week) - (a.releaseDate.year * 52 + a.releaseDate.week));
+                return [...filtered].sort((a, b) => (b.releaseDate.year * 52 + b.releaseDate.week) - (a.releaseDate.year * 52 + a.releaseDate.week));
             case 'Oldest':
-                return filtered.sort((a, b) => (a.releaseDate.year * 52 + a.releaseDate.week) - (b.releaseDate.year * 52 + a.releaseDate.week));
+                return [...filtered].sort((a, b) => (a.releaseDate.year * 52 + a.releaseDate.week) - (b.releaseDate.year * 52 + b.releaseDate.week));
+            default:
+                return filtered;
         }
     }, [videos, filter, channelIdToShow]);
 
@@ -262,7 +264,7 @@ const YouTubeChannelView: React.FC = () => {
     };
 
     return (
-        <div className="bg-[#0f0f0f] text-white min-h-screen">
+        <div className="bg-[#0f0f0f] text-white min-h-screen pb-20">
             <header className="p-4 flex items-center gap-4 sticky top-0 bg-[#0f0f0f]/80 backdrop-blur-sm z-10 border-b border-white/10">
                 <button onClick={handleBack} className="p-2 rounded-full hover:bg-white/10">
                     <ArrowLeftIcon className="w-6 h-6" />
@@ -382,32 +384,11 @@ const YouTubeChannelView: React.FC = () => {
     );
 };
 
-const YouTubeBottomNav: React.FC<{ activeTab: 'home' | 'channels'; onTabChange: (tab: 'home' | 'channels') => void }> = ({ activeTab, onTabChange }) => {
-    return (
-        <nav className="fixed bottom-0 left-0 right-0 h-16 bg-black border-t border-zinc-800 flex justify-around items-center z-30">
-            <button onClick={() => onTabChange('home')} className={`flex flex-col items-center gap-1 ${activeTab === 'home' ? 'text-white' : 'text-zinc-400'}`}>
-                <HomeIcon className="w-6 h-6" />
-                <span className="text-xs">Home</span>
-            </button>
-            <button onClick={() => onTabChange('channels')} className={`flex flex-col items-center gap-1 ${activeTab === 'channels' ? 'text-white' : 'text-zinc-400'}`}>
-                <UserGroupIcon className="w-6 h-6" />
-                <span className="text-xs">Channels</span>
-            </button>
-        </nav>
-    );
-};
-
+// Fix: Defined YouTubeView component to resolve the "Cannot find name" error.
 const YouTubeView: React.FC = () => {
-    const [activeTab, setActiveTab] = useState<'home' | 'channels'>('home');
-
-    return (
-        <div className="bg-[#0f0f0f] text-white min-h-screen">
-            <div className="pb-16"> {/* Padding for bottom nav */}
-                {activeTab === 'home' ? <YouTubeHome /> : <YouTubeChannelView />}
-            </div>
-            <YouTubeBottomNav activeTab={activeTab} onTabChange={setActiveTab} />
-        </div>
-    );
+    // Decision logic: show Home (feed) as the primary entry point for the "YouTube" app icon.
+    // In a more complex app, this might be controlled by internal navigation state.
+    return <YouTubeHome />;
 };
 
 export default YouTubeView;

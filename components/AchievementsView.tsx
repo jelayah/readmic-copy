@@ -12,18 +12,23 @@ const AchievementCard: React.FC<{ title: string; children: React.ReactNode; acce
     </div>
 );
 
-const ItemRow: React.FC<{ item: Song | Release | Video; value: number; rank: number; isFaded?: boolean }> = ({ item, value, rank, isFaded }) => (
-    <div className={`flex items-center gap-3 p-2 rounded-lg transition-colors ${isFaded ? 'opacity-50' : ''}`}>
-        <div className="flex items-center justify-center font-bold w-6 text-center text-zinc-400">
-            {rank}
+const ItemRow: React.FC<{ item: Song | Release | Video; value: number; rank: number; isFaded?: boolean }> = ({ item, value, rank, isFaded }) => {
+    // Narrowing the image source based on item type
+    const imageUrl = 'coverArt' in item ? (item as any).coverArt : (item as any).thumbnail;
+    
+    return (
+        <div className={`flex items-center gap-3 p-2 rounded-lg transition-colors ${isFaded ? 'opacity-50' : ''}`}>
+            <div className="flex items-center justify-center font-bold w-6 text-center text-zinc-400">
+                {rank}
+            </div>
+            <img src={imageUrl} alt={item.title} className="w-12 h-12 rounded-md object-cover flex-shrink-0" />
+            <div className="flex-grow min-w-0">
+                <p className="font-semibold truncate">{item.title}</p>
+                <p className="text-sm text-zinc-400 font-mono">{formatNumber(value)}</p>
+            </div>
         </div>
-        <img src={'coverArt' in item ? item.coverArt : item.thumbnail} alt={item.title} className="w-12 h-12 rounded-md object-cover flex-shrink-0" />
-        <div className="flex-grow min-w-0">
-            <p className="font-semibold truncate">{item.title}</p>
-            <p className="text-sm text-zinc-400 font-mono">{formatNumber(value)}</p>
-        </div>
-    </div>
-);
+    );
+};
 
 const ExpandableList: React.FC<{ 
     items: Array<Song | Release | Video>; 
@@ -37,7 +42,7 @@ const ExpandableList: React.FC<{
     }
 
     const displayedItems = isExpanded ? items.slice(0, 10) : items.slice(0, 3);
-    const rowHeight = 64; // h-16 (4rem) + p-2 + space-y-1
+    const rowHeight = 64; 
     const listHeight = displayedItems.length * rowHeight;
     const expandedHeight = Math.min(10, items.length) * rowHeight;
 
@@ -46,7 +51,13 @@ const ExpandableList: React.FC<{
             <div className="overflow-hidden transition-all duration-300 ease-in-out" style={{ maxHeight: isExpanded ? `${expandedHeight}px` : `${listHeight}px` }}>
                 <div className="space-y-1">
                     {displayedItems.map((item, i) => (
-                        <ItemRow key={item.id} item={item} value={getValue(item)} rank={i + 1} isFaded={'isTakenDown' in item ? item.isTakenDown : false} />
+                        <ItemRow 
+                            key={item.id} 
+                            item={item} 
+                            value={getValue(item)} 
+                            rank={i + 1} 
+                            isFaded={'isTakenDown' in item ? (item as any).isTakenDown : false} 
+                        />
                     ))}
                 </div>
             </div>
@@ -59,7 +70,7 @@ const ExpandableList: React.FC<{
                     <ChevronDownIcon className={`w-4 h-4 transform transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
                 </button>
             )}
-        </>
+        </div>
     );
 };
 
@@ -136,7 +147,7 @@ const AchievementsView: React.FC = () => {
                 <AchievementCard title="Top First Week Streams" accentColorClass="text-green-400">
                     <ExpandableList 
                         items={topSongsFirstWeek} 
-                        getValue={(item) => item.firstWeekStreams} 
+                        getValue={(item) => (item as any).firstWeekStreams} 
                         emptyMessage="No songs with first week data yet." 
                     />
                 </AchievementCard>
@@ -144,7 +155,7 @@ const AchievementsView: React.FC = () => {
                 <AchievementCard title="Top First Week Album/EP Streams" accentColorClass="text-green-400">
                     <ExpandableList 
                         items={topAlbumsFirstWeek} 
-                        getValue={(item) => item.firstWeekStreams} 
+                        getValue={(item) => (item as any).firstWeekStreams} 
                         emptyMessage="No projects with first week data yet." 
                     />
                 </AchievementCard>
@@ -152,7 +163,7 @@ const AchievementsView: React.FC = () => {
                 <AchievementCard title="Top First Week Video Views" accentColorClass="text-red-400">
                     <ExpandableList 
                         items={topVideosFirstWeek} 
-                        getValue={(item) => item.firstWeekViews} 
+                        getValue={(item) => (item as any).firstWeekViews} 
                         emptyMessage="No videos with first week data yet." 
                     />
                 </AchievementCard>
@@ -160,7 +171,7 @@ const AchievementsView: React.FC = () => {
                 <AchievementCard title="Most Fraudulent Songs" accentColorClass="text-yellow-400">
                     <ExpandableList 
                         items={topFraudulentSongs} 
-                        getValue={(item) => item.removedStreams} 
+                        getValue={(item) => (item as any).removedStreams} 
                         emptyMessage="No songs have had artificial streams removed yet." 
                     />
                 </AchievementCard>

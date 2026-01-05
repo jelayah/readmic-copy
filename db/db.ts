@@ -1,3 +1,4 @@
+
 import Dexie, { type Table } from 'dexie';
 import type { GameState } from '../types';
 
@@ -11,7 +12,8 @@ class RedMicDexie extends Dexie {
 
   constructor() {
     super('red-mic-game');
-    this.version(1).stores({
+    // Fix: RedMicDexie inherits version from Dexie. Cast 'this' to Dexie to ensure the compiler recognizes the version() method correctly.
+    (this as Dexie).version(1).stores({
       saves: '++id', // Primary key auto-incrementing
     });
   }

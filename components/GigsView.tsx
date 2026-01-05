@@ -8,7 +8,8 @@ import { ArtistData } from '../types';
 interface Gig {
     name: string;
     description: string;
-    cashRange: [number, number];
+    // Fix: Updated cashRange to readonly number[] to match inferred types from constants.ts and resolve assignment errors.
+    cashRange: readonly number[];
     hype: number;
     isAvailable: (state: ArtistData) => boolean;
     requirements: string;
@@ -23,7 +24,10 @@ const GigsView: React.FC = () => {
     const handlePerform = (gig: Gig) => {
         if (performedGigThisWeek || !gig.isAvailable(activeArtistData)) return;
 
-        const cashEarned = Math.floor(Math.random() * (gig.cashRange[1] - gig.cashRange[0] + 1)) + gig.cashRange[0];
+        // Note: Constants are assumed to have at least 2 elements for the range.
+        const min = gig.cashRange[0] || 0;
+        const max = gig.cashRange[1] || min;
+        const cashEarned = Math.floor(Math.random() * (max - min + 1)) + min;
         dispatch({ type: 'PERFORM_GIG', payload: { cash: cashEarned, hype: gig.hype } });
     };
 

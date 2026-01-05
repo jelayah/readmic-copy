@@ -1,7 +1,6 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
 import { useGame, formatNumber } from '../context/GameContext';
-// FIX: Imported ArtistData to resolve type errors when iterating over artistsData.
 import { Artist, Group, Song, Release, ChartEntry, AlbumChartEntry, NpcSong, NpcAlbum, GameDate, ArtistData } from '../types';
 import ArrowLeftIcon from './icons/ArrowLeftIcon';
 import ListBulletIcon from './icons/ListBulletIcon';
@@ -44,7 +43,6 @@ const getPrice = (id: string, type: 'song' | 'album', trackCount = 0) => {
 // --- DATA HOOK ---
 const useItunesData = () => {
     const { gameState, allPlayerArtists } = useGame();
-    // FIX: Removed `labelSubmissions` from gameState destructuring as it's part of artistsData.
     const { billboardHot100, billboardTopAlbums, npcs, npcAlbums, artistsData } = gameState;
 
     const allSongs = useMemo<ITunesSong[]>(() => {
@@ -94,8 +92,8 @@ const useItunesData = () => {
                         break;
                     }
                 }
-                // FIX: Correctly access labelSubmissions from within each artist's data.
-                const submission = Object.values(artistsData).flatMap(d => d.labelSubmissions).find(s => s.release.id === entry.albumId && s.status === 'scheduled');
+                // FIX: Added type cast to ArtistData[] to fix unknown property error
+                const submission = (Object.values(artistsData) as ArtistData[]).flatMap(d => d.labelSubmissions).find(s => s.release.id === entry.albumId && s.status === 'scheduled');
                 if (submission?.projectReleaseDate) {
                     isPreorder = (submission.projectReleaseDate.year * 52 + submission.projectReleaseDate.week) > (gameState.date.year * 52 + gameState.date.week);
                 }

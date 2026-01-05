@@ -1,5 +1,4 @@
 
-
 import React, { useState, useMemo } from 'react';
 import { useGame } from '../context/GameContext';
 import type { Release, ReleaseType, Song, LabelSubmission } from '../types';
@@ -135,7 +134,8 @@ const ReleaseView: React.FC = () => {
                 // If there's a distribution deal, check quality against major label standards.
                 if (customLabel && customLabel.dealWithMajorId) {
                     const majorLabel = LABELS.find(l => l.id === customLabel.dealWithMajorId);
-                    const avgQuality = Array.from(selectedSongIds).reduce((sum: number, id) => sum + (songs.find(s => s.id === id)?.quality || 0), 0) / (selectedSongIds.size || 1);
+                    // Fix: Added explicit type cast to resolve arithmetic operation error
+                    const avgQuality = (Array.from(selectedSongIds).reduce((sum: number, id) => sum + (songs.find(s => s.id === id)?.quality || 0), 0) as number) / (selectedSongIds.size || 1);
                     
                     if (majorLabel && avgQuality < majorLabel.minQuality) {
                         setError(`Your release quality (${avgQuality.toFixed(0)}) doesn't meet the standards of your distribution partner, ${majorLabel.name} (requires ${majorLabel.minQuality}).`);

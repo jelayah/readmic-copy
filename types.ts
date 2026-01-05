@@ -1,5 +1,4 @@
 
-
 export interface Artist {
     id: string;
     name: string;
@@ -245,16 +244,35 @@ export interface FeatureReleaseNotification {
     npcArtistName: string;
 }
 
+export interface VmaSubmissionOffer {
+    type: 'vmaSubmission';
+    emailId: string;
+    isSubmitted: boolean;
+}
+
+export interface VmaNominationOffer {
+    type: 'vmaNominations';
+    emailId: string;
+    hasPerformanceOffer: boolean;
+    isPerformanceAccepted?: boolean;
+}
+
+export interface VmaRedCarpetOffer {
+    type: 'vmaRedCarpet';
+    emailId: string;
+    isAttending?: boolean;
+}
+
 
 export interface Email {
     id: string;
     sender: string;
-    senderIcon?: 'spotify' | 'youtube' | 'default' | 'label' | 'genius' | 'fallon' | 'popbase' | 'grammys' | 'x' | 'onlyfans' | 'soundtrack' | 'touringdata' | 'business' | 'vogue' | 'feature' | 'ontheradar' | 'trshd' | 'oscars';
+    senderIcon?: 'spotify' | 'youtube' | 'default' | 'label' | 'genius' | 'fallon' | 'popbase' | 'grammys' | 'x' | 'onlyfans' | 'soundtrack' | 'touringdata' | 'business' | 'vogue' | 'feature' | 'ontheradar' | 'trshd' | 'oscars' | 'vmas';
     subject: string;
     body: string;
     date: GameDate;
     isRead: boolean;
-    offer?: GeniusOffer | FallonOffer | PopBaseOffer | GrammySubmissionOffer | GrammyNominationOffer | GrammyRedCarpetOffer | LeakNotification | XSuspensionEmail | XAppealResultEmail | OnlyFansOffer | SoundtrackOffer | TouringDataUpdate | VogueOffer | FeatureOffer | FeatureReleaseNotification | OnTheRadarOffer | TrshdOffer | OscarsSubmissionOffer | OscarsNominationOffer;
+    offer?: GeniusOffer | FallonOffer | PopBaseOffer | GrammySubmissionOffer | GrammyNominationOffer | GrammyRedCarpetOffer | LeakNotification | XSuspensionEmail | XAppealResultEmail | OnlyFansOffer | SoundtrackOffer | TouringDataUpdate | VogueOffer | FeatureOffer | FeatureReleaseNotification | OnTheRadarOffer | TrshdOffer | OscarsSubmissionOffer | OscarsNominationOffer | VmaSubmissionOffer | VmaNominationOffer | VmaRedCarpetOffer;
 }
 
 export interface GameDate {
@@ -340,7 +358,6 @@ export interface ChartHistory {
 export interface Label {
     id: 'umg' | 'republic' | 'rca' | 'island' | 'interscope' | 'columbia' | 'atlantic' | 'epic' | 'quality_control' | 'tde' | 'roc_nation';
     name: string;
-// FIX: Corrected typo 'Mid-High' to 'Mid-high' to match usage.
     tier: 'Top' | 'Mid-high' | 'Mid-Low' | 'Low';
     logo: string;
     promotionMultiplier: number;
@@ -460,6 +477,15 @@ export interface GrammyAward {
     isWinner: boolean;
 }
 
+export interface VmaAward {
+    year: number;
+    category: 'Video of the Year' | 'Artist of the Year' | 'Song of the Year' | 'Best New Artist' | 'Best Pop' | 'Best Hip Hop' | 'Best R&B';
+    itemId: string; // videoId, songId, or artistId
+    itemName: string;
+    artistName: string;
+    isWinner: boolean;
+}
+
 export interface OscarAward {
     year: number;
     category: 'Best Original Song';
@@ -470,6 +496,15 @@ export interface OscarAward {
 }
 
 export interface GrammyContender {
+    id: string;
+    name: string;
+    artistName: string;
+    isPlayer: boolean;
+    score: number;
+    coverArt?: string;
+}
+
+export interface VmaContender {
     id: string;
     name: string;
     artistName: string;
@@ -492,6 +527,12 @@ export interface GrammyCategory {
     name: 'Best New Artist' | 'Record of the Year' | 'Song of the Year' | 'Album of the Year' | 'Best Pop Song' | 'Best Rap Song' | 'Best R&B Song' | 'Pop Album' | 'Rap Album' | 'R&B Album';
     nominees: GrammyContender[];
     winner?: GrammyContender;
+}
+
+export interface VmaCategory {
+    name: 'Video of the Year' | 'Artist of the Year' | 'Song of the Year' | 'Best New Artist' | 'Best Pop' | 'Best Hip Hop' | 'Best R&B';
+    nominees: VmaContender[];
+    winner?: VmaContender;
 }
 
 export interface OscarCategory {
@@ -653,26 +694,22 @@ export interface ArtistData {
     xTrends: XTrend[];
     xFollowingIds: string[];
     xSuspensionStatus: XSuspensionStatus | null;
-    // Spotify for Artists Stats
     followers: number;
     saves: number;
     artistPick: { itemId: string; itemType: 'song' | 'release'; message: string; } | null;
     listeningNow: number;
     streamsHistory: { date: GameDate; streams: number }[];
     firstChartEntry?: { songTitle: string; rank: number; date: GameDate } | null;
-    // Red Mic Pro
     redMicPro: RedMicProState;
     salesBoost: number; // percentage
     isGoldTheme: boolean;
-    // GRAMMYs
     grammyHistory: GrammyAward[];
     hasSubmittedForBestNewArtist: boolean;
-    // Oscars
+    vmaHistory: VmaAward[];
+    hasSubmittedForVmaBestNewArtist: boolean;
     oscarHistory: OscarAward[];
-    // OnlyFans
     onlyfans: OnlyFansProfile | null;
     fanWarStatus: { targetArtistName: string; weeksRemaining: number; } | null;
-    // Soundtracks
     soundtrackOfferCount: number;
     offeredSoundtracks: Array<'F1 The Album' | 'Wicked' | 'Breaking Bad'>;
     weeksUntilNextSoundtrackOffer?: number;
@@ -726,7 +763,7 @@ export interface GameState {
         npcArtistName: string;
         payout: number;
         songQuality: number;
-        promotion?: { name: string; durationWeeks: number; };
+        promotion?: { name: string; durationWeeks: number };
         emailId: string;
     } | null;
     selectedXUserId: string | null;
@@ -734,19 +771,17 @@ export interface GameState {
     contractRenewalOffer: { labelId: string; isCustom?: boolean; artistId: string } | null;
     activeTourId: string | null;
     viewingPastLabelId: string | null;
-    activeVogueOffer: {
-        magazine: 'Vogue' | 'Vogue Korea' | 'Vogue Italy';
-        emailId: string;
-    } | null;
-    // GRAMMYs
-    grammySubmissions: { artistId: string, category: GrammyAward['category'], itemId: string, itemName: string }[];
+    // Fix: Updated activeVogueOffer magazine type to match VogueOffer for type safety in components.
+    activeVogueOffer: { magazine: VogueOffer['magazine']; emailId: string } | null;
+    grammySubmissions: { artistId: string; category: string; itemId: string; itemName: string }[];
     grammyCurrentYearNominations: GrammyCategory[] | null;
     activeGrammyPerformanceOffer: { emailId: string } | null;
     activeGrammyRedCarpetOffer: { emailId: string } | null;
-    // Oscars
-    oscarSubmissions: { artistId: string, category: 'Best Original Song', itemId: string, itemName: string }[];
+    oscarSubmissions: { artistId: string; category: string; itemId: string; itemName: string }[];
     oscarCurrentYearNominations: OscarCategory[] | null;
     activeOscarPerformanceOffer: { emailId: string } | null;
+    activeVmaPerformanceOffer?: { emailId: string } | null;
+    activeVmaRedCarpetOffer?: { emailId: string } | null;
 }
 
 export type GameAction =
@@ -759,11 +794,11 @@ export type GameAction =
     | { type: 'PROGRESS_WEEK' }
     | { type: 'RECORD_SONG'; payload: { song: Song; cost: number } }
     | { type: 'RELEASE_PROJECT'; payload: { release: Release } }
-    | { type: 'ADD_REVIEW'; payload: { releaseId: string; review: Review; cost: number; artistId: string; } }
+    | { type: 'ADD_REVIEW'; payload: { releaseId: string; review: Review; cost: number; artistId: string } }
     | { type: 'CREATE_VIDEO'; payload: { video: Video; cost: number } }
     | { type: 'ADD_MERCH'; payload: { item: MerchProduct } }
     | { type: 'REMOVE_MERCH'; payload: { id: string } }
-    | { type: 'UPDATE_MERCH_BANNER'; payload: string }
+    | { type: 'UPDATE_MERCH_BANNER'; payload: string | null }
     | { type: 'MARK_INBOX_READ' }
     | { type: 'START_PROMOTION'; payload: { promotion: Promotion } }
     | { type: 'CANCEL_PROMOTION'; payload: { promotionId: string } }
@@ -774,7 +809,7 @@ export type GameAction =
     | { type: 'END_CONTRACT' }
     | { type: 'SUBMIT_TO_LABEL'; payload: { submission: LabelSubmission } }
     | { type: 'GO_TO_LABEL_PLAN'; payload: { submissionId: string } }
-    | { type: 'PLAN_LABEL_RELEASE'; payload: { submissionId: string; singles: { songId: string; releaseDate: GameDate }[]; projectReleaseDate: GameDate; } }
+    | { type: 'PLAN_LABEL_RELEASE'; payload: { submissionId: string; singles: { songId: string; releaseDate: GameDate }[]; projectReleaseDate: GameDate } }
     | { type: 'ACCEPT_GENIUS_OFFER'; payload: { songId: string; emailId: string } }
     | { type: 'CREATE_GENIUS_INTERVIEW'; payload: { video: Video } }
     | { type: 'CANCEL_GENIUS_OFFER' }
@@ -796,7 +831,7 @@ export type GameAction =
     | { type: 'VIEW_X_CHAT'; payload: string }
     | { type: 'FOLLOW_X_USER'; payload: string }
     | { type: 'UNFOLLOW_X_USER'; payload: string }
-    | { type: 'SEND_X_MESSAGE'; payload: { chatId: string; message: XMessage; } }
+    | { type: 'SEND_X_MESSAGE'; payload: { chatId: string; message: XMessage } }
     | { type: 'APPEAL_X_SUSPENSION' }
     | { type: 'SET_ARTIST_PICK'; payload: { itemId: string; itemType: 'song' | 'release'; message: string; } }
     | { type: 'PITCH_TO_PLAYLIST'; payload: { songId: string } }
@@ -808,22 +843,22 @@ export type GameAction =
     | { type: 'REQUEST_FALLON_PROMO'; payload: { submissionId: string; songId: string; cost: number } }
     | { type: 'RESET_GAME' }
     | { type: 'LOAD_GAME'; payload: GameState }
-    | { type: 'UNLOCK_RED_MIC_PRO'; payload: { type: 'yearly' | 'lifetime' | 'code'; cost: number; } }
-    | { type: 'UPDATE_SONG_QUALITY'; payload: { songId: string; newQuality: number; } }
-    | { type: 'SET_MONEY'; payload: { newAmount: number; } }
-    | { type: 'TOGGLE_GOLD_THEME'; payload: { enabled: boolean; } }
-    | { type: 'SET_SALES_BOOST'; payload: { newBoost: number; } }
-    | { type: 'UPDATE_WIKIPEDIA_SUMMARY'; payload: { releaseId: string; summary: string; } }
-    | { type: 'PRO_SIGN_LABEL'; payload: { labelId: Label['id']; } }
+    | { type: 'UNLOCK_RED_MIC_PRO'; payload: { type: 'yearly' | 'lifetime' | 'code'; cost: number } }
+    | { type: 'UPDATE_SONG_QUALITY'; payload: { songId: string; newQuality: number } }
+    | { type: 'SET_MONEY'; payload: { newAmount: number } }
+    | { type: 'TOGGLE_GOLD_THEME'; payload: { enabled: boolean } }
+    | { type: 'SET_SALES_BOOST'; payload: { newBoost: number } }
+    | { type: 'PRO_SIGN_LABEL'; payload: { labelId: string } }
+    | { type: 'UPDATE_WIKIPEDIA_SUMMARY'; payload: { releaseId: string; summary: string } }
     | { type: 'GO_TO_GRAMMY_SUBMISSIONS'; payload: { emailId: string } }
-    | { type: 'SUBMIT_FOR_GRAMMYS'; payload: { submissions: GameState['grammySubmissions'], emailId: string } }
+    | { type: 'SUBMIT_FOR_GRAMMYS'; payload: { submissions: any[]; emailId: string } }
     | { type: 'ACCEPT_GRAMMY_PERFORMANCE'; payload: { emailId: string } }
     | { type: 'CREATE_GRAMMY_PERFORMANCE'; payload: { video: Video } }
     | { type: 'DECLINE_GRAMMY_PERFORMANCE'; payload: { emailId: string } }
-    | { type: 'ACCEPT_GRAMMY_RED_CARPET'; payload: { emailId: string, lookUrl: string } }
+    | { type: 'ACCEPT_GRAMMY_RED_CARPET'; payload: { emailId: string; lookUrl: string } }
     | { type: 'DECLINE_GRAMMY_RED_CARPET'; payload: { emailId: string } }
     | { type: 'GO_TO_OSCAR_SUBMISSIONS'; payload: { emailId: string } }
-    | { type: 'SUBMIT_FOR_OSCARS'; payload: { submissions: GameState['oscarSubmissions'], emailId: string } }
+    | { type: 'SUBMIT_FOR_OSCARS'; payload: { submissions: any[]; emailId: string } }
     | { type: 'ACCEPT_OSCAR_PERFORMANCE'; payload: { emailId: string } }
     | { type: 'CREATE_OSCAR_PERFORMANCE'; payload: { video: Video } }
     | { type: 'DECLINE_OSCAR_PERFORMANCE'; payload: { emailId: string } }
@@ -833,22 +868,22 @@ export type GameAction =
     | { type: 'CREATE_ONLYFANS_PROFILE'; payload: { profile: OnlyFansProfile } }
     | { type: 'UPDATE_ONLYFANS_SETTINGS'; payload: { price: number } }
     | { type: 'CREATE_ONLYFANS_POST'; payload: { post: OnlyFansPost } }
-    | { type: 'ACCEPT_ONLYFANS_REQUEST'; payload: { emailId: string; payout: number; } }
+    | { type: 'ACCEPT_ONLYFANS_REQUEST'; payload: { emailId: string; payout: number } }
     | { type: 'SET_PRO_HYPE_MODE'; payload: 'locked' | 'manual' }
     | { type: 'SET_HYPE'; payload: number }
     | { type: 'SET_POPULARITY'; payload: number }
     | { type: 'UPDATE_RELEASE_COVER_ART'; payload: { releaseId: string; newCoverArt: string } }
-    | { type: 'ACCEPT_SOUNDTRACK_OFFER'; payload: { albumTitle: 'F1 The Album' | 'Wicked' | 'Breaking Bad'; emailId: string } }
-    | { type: 'CREATE_SOUNDTRACK_CONTRIBUTION'; payload: { albumTitle: 'F1 The Album' | 'Wicked' | 'Breaking Bad'; coverArt: string; songIds: string[] } }
+    | { type: 'ACCEPT_SOUNDTRACK_OFFER'; payload: { albumTitle: string; emailId: string } }
+    | { type: 'CREATE_SOUNDTRACK_CONTRIBUTION'; payload: { albumTitle: string; coverArt: string; songIds: string[] } }
     | { type: 'CANCEL_SOUNDTRACK_OFFER' }
-    | { type: 'ACCEPT_FEATURE_OFFER', payload: FeatureOffer }
+    | { type: 'ACCEPT_FEATURE_OFFER'; payload: any }
     | { type: 'CANCEL_FEATURE_OFFER' }
-    | { type: 'CREATE_FEATURE_SONG', payload: { songTitle: string, coverArt: string, releaseDate: GameDate } }
+    | { type: 'CREATE_FEATURE_SONG'; payload: { songTitle: string; coverArt: string; releaseDate: GameDate } }
+    | { type: 'SELECT_SOUNDTRACK'; payload: string }
     | { type: 'CREATE_TOUR'; payload: Tour }
     | { type: 'START_TOUR'; payload: { tourId: string } }
     | { type: 'UPLOAD_TOUR_PHOTO'; payload: string }
-    | { type: 'SELECT_SOUNDTRACK'; payload: string | null }
-    | { type: 'SELECT_TOUR'; payload: string | null }
+    | { type: 'SELECT_TOUR'; payload: string }
     | { type: 'HIRE_MANAGER'; payload: { managerId: string } }
     | { type: 'FIRE_MANAGER' }
     | { type: 'HIRE_SECURITY'; payload: { teamId: string } }
@@ -856,6 +891,12 @@ export type GameAction =
     | { type: 'UPDATE_NPC_X_USER'; payload: { userId: string; newName: string; newUsername: string } }
     | { type: 'VIEW_PAST_LABEL_CHANNEL'; payload: string }
     | { type: 'UPDATE_NPC_AVATAR'; payload: { userId: string; newAvatar: string } }
-    | { type: 'ACCEPT_VOGUE_OFFER'; payload: { magazine: 'Vogue' | 'Vogue Korea' | 'Vogue Italy'; emailId: string; } }
+    | { type: 'ACCEPT_VOGUE_OFFER'; payload: { magazine: string; emailId: string } }
     | { type: 'CANCEL_VOGUE_OFFER' }
-    | { type: 'CREATE_VOGUE_FEATURE'; payload: { photoshoot: VoguePhotoshoot } };
+    | { type: 'CREATE_VOGUE_FEATURE'; payload: { photoshoot: VoguePhotoshoot } }
+    | { type: 'SUBMIT_FOR_VMAS'; payload: { submissions: any[]; emailId: string } }
+    | { type: 'ACCEPT_VMA_PERFORMANCE'; payload: { emailId: string } }
+    | { type: 'CREATE_VMA_PERFORMANCE'; payload: { video: Video } }
+    | { type: 'DECLINE_VMA_PERFORMANCE'; payload: { emailId: string } }
+    | { type: 'ACCEPT_VMA_RED_CARPET'; payload: { emailId: string; lookUrl: string } }
+    | { type: 'DECLINE_VMA_RED_CARPET'; payload: { emailId: string } };

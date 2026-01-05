@@ -1,3 +1,4 @@
+
 import React, { useState, ChangeEvent } from 'react';
 import { useGame, formatNumber } from '../context/GameContext';
 import ChevronRightIcon from './icons/ChevronRightIcon';
@@ -44,7 +45,8 @@ const MiscTab: React.FC = () => {
             const mimeType = 'application/json';
             const fileName = `red-mic-save_${artistName}_${dateStr}.json`;
 
-            const blob = new Blob([fileContent], { type: mimeType });
+            // Fix: Use window.Blob to avoid conflict with GoogleGenAI types
+            const blob = new window.Blob([fileContent], { type: mimeType });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;

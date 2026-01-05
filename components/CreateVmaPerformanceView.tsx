@@ -1,6 +1,4 @@
 
-
-
 import React, { useState, useMemo } from 'react';
 import { useGame } from '../context/GameContext';
 import { Video, Song } from '../types';
@@ -57,13 +55,16 @@ const CreateVmaPerformanceView: React.FC = () => {
 
         const newVideo: Video = {
             id: crypto.randomUUID(),
-            songId: Array.from(selectedSongIds)[0],
+            // Fix: Added explicit type cast for songId to resolve assignment error
+            songId: Array.from(selectedSongIds)[0] as string,
             title: videoTitle,
             type: 'Live Performance',
             views: 0,
             thumbnail,
             releaseDate: { week: 30, year: date.year },
             artistId: activeArtist.id,
+            // Fix: Added missing required property channelId
+            channelId: activeArtist.id,
             description,
             mentionedNpcs: [],
         };

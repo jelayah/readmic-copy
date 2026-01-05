@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { useGame } from '../context/GameContext';
 import ArrowLeftIcon from './icons/ArrowLeftIcon';
@@ -33,173 +32,115 @@ const guideSections: GuideSection[] = [
         )
     },
     {
-        id: 'music-lifecycle',
-        title: 'The Music Lifecycle',
+        id: 'music-studio',
+        title: 'Studio & Releases',
         icon: <MusicNoteIcon className="w-5 h-5" />,
         content: (
             <>
-                <h3 className="font-bold text-red-400">1. Recording Songs</h3>
-                <p>Use the 'Studio' app to record. The quality of your song (0-100) is the most critical factor for its success. The studio you choose determines the possible quality range.</p>
-                
-                <h3 className="font-bold text-red-400 mt-4">2. Releasing Music</h3>
-                <p>Go to the 'Release Hub' to package unreleased songs. You can release a <strong>Single</strong> (1 song), an <strong>EP</strong> (3-7 songs), or an <strong>Album</strong> (8+ songs). Releasing independently gives you full control, but signing to a label offers promotional power.</p>
-
-                <h3 className="font-bold text-red-400 mt-4">3. Promotion</h3>
-                <p>Use the 'Payola' app to run promotional campaigns. This costs money weekly but multiplies your streams/views. You can also pitch songs to Spotify playlists via the 'Spotify for Artists' app for a potential boost.</p>
-
-                <h3 className="font-bold text-red-400 mt-4">4. Music Videos</h3>
-                <p>Create videos in the 'YouTube' app. A Music Video gives the biggest view boost, followed by Live Performances and Interviews.</p>
-            </>
-        )
-    },
-    {
-        id: 'career-progression',
-        title: 'Career Progression',
-        icon: <BriefcaseIcon className="w-5 h-5" />,
-        content: (
-            <>
-                <h3 className="font-bold text-red-400">Gigs & Tours</h3>
-                <p>Perform live shows in the 'Gigs' app to earn quick cash and hype. As your popularity grows, you'll unlock bigger venues. In the 'Ticketmaster' app, you can plan multi-city tours, which are a massive source of income.</p>
-                
-                <h3 className="font-bold text-red-400 mt-4">Record Labels</h3>
-                <p>Use the 'Labels' app to seek a record deal. You'll need to meet their stream requirements. Once signed, you submit music for approval. They handle releases and provide a huge promotional multiplier.</p>
-                <p>Beware of <strong>"Petty Labels"</strong> (e.g., Quality Control, TDE). If you leave their contract, they will take down all music you released with them. You can later re-record these songs to reclaim your masters.</p>
-
-                <h3 className="font-bold text-red-400 mt-4">Business Ventures</h3>
-                <p>Hire staff in the 'Management' and 'Security' apps. Managers automatically book gigs and unlock higher-tier opportunities. Security teams reduce the chance of your unreleased music leaking.</p>
-            </>
-        )
-    },
-    {
-        id: 'fame-and-image',
-        title: 'Fame & Public Image',
-        icon: <FireIcon className="w-5 h-5" />,
-        content: (
-            <>
-                <h3 className="font-bold text-red-400">Social Media (X)</h3>
-                <p>Use the 'X' app to engage with your fanbase. You can make normal posts, start "fan wars" against rival artists for a hype boost, or "push" a song on iTunes during a fan war. The media (PopBase, TMZ) will also post about your activities, creating buzz and sometimes controversy.</p>
-
-                <h3 className="font-bold text-red-400 mt-4">Media Features</h3>
-                <p>As you gain traction, you'll receive offers in your 'Inbox' for interviews and performances with platforms like Genius, The Tonight Show, and Vogue. Accepting these provides significant hype and popularity boosts.</p>
-
-                <h3 className="font-bold text-red-400 mt-4">Exclusive Content (OnlyFans)</h3>
-                <p>Once you've built a dedicated fanbase, you can create an OnlyFans profile to monetize exclusive content and interact more directly with your top supporters, creating a new revenue stream.</p>
-            </>
-        )
-    },
-    {
-        id: 'charts-and-awards',
-        title: 'Charts & Awards',
-        icon: <ChartBarIcon className="w-5 h-5" />,
-        content: (
-            <>
-                <h3 className="font-bold text-red-400">How Charts Work</h3>
-                <p>Song charts (like the Billboard Hot 100) are based purely on weekly streams. Album charts use "album equivalent units," which combine streams from album tracks with pure sales from your merch store (vinyls, CDs).</p>
-                <p><strong>Recurrent Rule:</strong> A song is removed from the Hot 100 if it has been on the chart for 20+ weeks AND falls below position #50.</p>
-                
-                <h3 className="font-bold text-red-400 mt-4">Awards Season</h3>
-                <p>Each year, you'll get emails to submit your music for the GRAMMYs and your videos for the VMAs. Navigate to the submission pages via your inbox. Winning awards gives a permanent boost to your legacy and popularity.</p>
-            </>
-        )
-    },
-    {
-        id: 'red-mic-pro',
-        title: 'Red Mic Pro',
-        icon: <StarIcon className="w-5 h-5" />,
-        content: (
-            <>
-                <p>Red Mic Pro is the premium version of the game, designed for players who want more control.</p>
+                <p>The core of your career is making music. Go to the <strong>Studio</strong> app to record songs.</p>
                 <ul className="list-disc list-inside space-y-2 pl-2">
-                    <li><strong>Edit Stats:</strong> Directly change your money, hype, and popularity.</li>
-                    <li><strong>Song Quality:</strong> See the exact quality score of your unreleased songs and edit it.</li>
-                    <li><strong>Sign Instantly:</strong> Sign with any label instantly, ignoring their requirements.</li>
-                    <li><strong>Gold Theme:</strong> Unlock an exclusive cosmetic gold theme for the UI.</li>
+                    <li><strong>Studio Selection:</strong> Better studios cost more but yield higher quality songs. Quality (0-100) directly impacts how well a song performs.</li>
+                    <li><strong>Collaborations:</strong> You can pay for features from NPC artists. This boosts quality and initial hype.</li>
+                    <li><strong>Releases:</strong> You can release Singles, EPs (3-7 songs), or Albums (8+ songs).</li>
+                    <li><strong>Labels:</strong> Major labels take a cut and limit creative control, but provide massive promotional power and budget. Independent releases give you 100% earnings but less reach.</li>
                 </ul>
             </>
         )
     },
+    {
+        id: 'charts',
+        title: 'Climbing the Charts',
+        icon: <ChartBarIcon className="w-5 h-5" />,
+        content: (
+            <>
+                <p>Charts update every week. The <strong>Billboard Hot 100</strong> and <strong>Billboard 200</strong> are your ultimate goals.</p>
+                <ul className="list-disc list-inside space-y-2 pl-2">
+                    <li><strong>Streaming:</strong> The main driver for charts. High quality, hype, and popularity are key.</li>
+                    <li><strong>Sales:</strong> Vinyl and CD sales from your Merch Store provide a massive boost to album chart positions.</li>
+                    <li><strong>Certifications:</strong> Reach milestones to earn Gold, Platinum, and Diamond certifications for your songs and albums.</li>
+                </ul>
+            </>
+        )
+    },
+    {
+        id: 'social-media',
+        title: 'Social Media & Hype',
+        icon: <FireIcon className="w-5 h-5" />,
+        content: (
+            <>
+                <p>Interact with fans and rivals on <strong>X</strong> (formerly Twitter) to build your presence.</p>
+                <ul className="list-disc list-inside space-y-2 pl-2">
+                    <li><strong>Posting:</strong> Share updates, photos, and videos. Fan accounts will react based on your popularity and recent activities.</li>
+                    <li><strong>Fan Wars:</strong> You can choose to start rivalries with other artists. This generates massive hype but risks negative press and account suspension.</li>
+                    <li><strong>Leaks:</strong> Unreleased songs can leak. This creates short-term buzz but removes "artificial" streams later. Security teams help prevent this.</li>
+                </ul>
+            </>
+        )
+    }
 ];
 
 const GameGuideView: React.FC = () => {
     const { dispatch } = useGame();
     const [activeSection, setActiveSection] = useState(guideSections[0].id);
-    const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
-    const contentRef = useRef<HTMLDivElement | null>(null);
+    const observer = useRef<IntersectionObserver | null>(null);
 
     useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        setActiveSection(entry.target.id);
-                    }
-                });
-            },
-            { root: contentRef.current, threshold: 0.3, rootMargin: '-40% 0px -60% 0px' }
-        );
+        observer.current = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    setActiveSection(entry.target.id);
+                }
+            });
+        }, { threshold: 0.5 });
 
-        Object.values(sectionRefs.current).forEach(ref => {
-            if (ref) observer.observe(ref);
+        guideSections.forEach(section => {
+            const el = document.getElementById(section.id);
+            if (el) observer.current?.observe(el);
         });
 
-        return () => {
-            Object.values(sectionRefs.current).forEach(ref => {
-                if (ref) observer.unobserve(ref);
-            });
-        };
+        return () => observer.current?.disconnect();
     }, []);
 
-    const scrollToSection = (id: string) => {
-        sectionRefs.current[id]?.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start',
-        });
+    const scrollTo = (id: string) => {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
     };
 
     return (
-        <div className="h-screen w-full bg-zinc-900 flex flex-col text-white">
-            <header className="p-4 flex items-center gap-4 flex-shrink-0 bg-zinc-900/80 backdrop-blur-sm z-10 border-b border-zinc-700/50">
-                <button onClick={() => dispatch({ type: 'CHANGE_VIEW', payload: 'game' })} className="p-2 rounded-full hover:bg-white/10">
+        <div className="h-screen w-full bg-zinc-900 flex flex-col">
+            <header className="p-4 flex items-center gap-4 sticky top-0 bg-zinc-900/80 backdrop-blur-sm z-10 border-b border-zinc-700/50">
+                <button onClick={() => dispatch({type: 'CHANGE_VIEW', payload: 'game'})} className="p-2 rounded-full hover:bg-white/10">
                     <ArrowLeftIcon className="w-6 h-6" />
                 </button>
                 <h1 className="text-2xl font-bold">Game Guide</h1>
             </header>
+            
             <div className="flex flex-grow overflow-hidden">
-                <aside className="w-1/3 md:w-1/4 h-full overflow-y-auto border-r border-zinc-700/50 p-4">
-                    <nav className="space-y-1">
-                        {guideSections.map(section => (
-                            <button
-                                key={section.id}
-                                onClick={() => scrollToSection(section.id)}
-                                className={`w-full flex items-center gap-3 p-2 rounded-md text-left transition-colors text-sm font-semibold ${
-                                    activeSection === section.id
-                                        ? 'bg-red-500/20 text-red-400'
-                                        : 'text-zinc-300 hover:bg-zinc-800'
-                                }`}
-                            >
-                                <span className="flex-shrink-0">{section.icon}</span>
-                                <span className="truncate">{section.title}</span>
-                            </button>
-                        ))}
-                    </nav>
-                </aside>
-                <main ref={contentRef} className="w-2/3 md:w-3/4 h-full overflow-y-auto p-4 md:p-6">
-                    <div className="space-y-8 max-w-2xl mx-auto">
-                        {guideSections.map(section => (
-                            <div
-                                key={section.id}
-                                id={section.id}
-                                ref={el => sectionRefs.current[section.id] = el}
-                                className="bg-zinc-800 p-4 rounded-lg scroll-mt-4"
-                            >
-                                <h2 className="text-2xl font-bold text-red-400 mb-4">{section.title}</h2>
-                                <div className="space-y-3 text-zinc-300 leading-relaxed">
-                                    {section.content}
-                                </div>
+                <nav className="w-16 md:w-64 border-r border-zinc-800 p-2 space-y-2 overflow-y-auto">
+                    {guideSections.map(section => (
+                        <button 
+                            key={section.id} 
+                            onClick={() => scrollTo(section.id)}
+                            className={`w-full flex items-center gap-3 p-3 rounded-lg transition-colors ${activeSection === section.id ? 'bg-red-600 text-white' : 'text-zinc-400 hover:bg-zinc-800'}`}
+                        >
+                            {section.icon}
+                            <span className="hidden md:block font-semibold text-sm">{section.title}</span>
+                        </button>
+                    ))}
+                </nav>
+                
+                <main className="flex-grow overflow-y-auto p-4 md:p-8 space-y-16 pb-32">
+                    {guideSections.map(section => (
+                        <section key={section.id} id={section.id} className="space-y-4 max-w-2xl mx-auto scroll-mt-24">
+                            <div className="flex items-center gap-3 text-red-500">
+                                {section.icon}
+                                <h2 className="text-2xl font-bold">{section.title}</h2>
                             </div>
-                        ))}
-                         <div className="h-32"></div>
-                    </div>
+                            <div className="text-zinc-300 leading-relaxed space-y-4">
+                                {section.content}
+                            </div>
+                        </section>
+                    ))}
                 </main>
             </div>
         </div>
